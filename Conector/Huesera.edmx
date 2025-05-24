@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="LA_HUESERAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Clientes">
+          <Key>
+            <PropertyRef Name="clienteID" />
+          </Key>
+          <Property Name="clienteID" Type="int" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="cedula" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="correo" Type="nvarchar" MaxLength="100" />
+          <Property Name="telefono" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="Peliculas">
+          <Key>
+            <PropertyRef Name="peliculaID" />
+          </Key>
+          <Property Name="peliculaID" Type="int" Nullable="false" />
+          <Property Name="codigo" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="titulo" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="genero" Type="nvarchar" MaxLength="50" />
+          <Property Name="director" Type="nvarchar" MaxLength="100" />
+          <Property Name="disponible" Type="bit" />
+        </EntityType>
+        <EntityType Name="Prestamos">
+          <Key>
+            <PropertyRef Name="prestamoID" />
+          </Key>
+          <Property Name="prestamoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="clienteID" Type="int" Nullable="false" />
+          <Property Name="peliculaID" Type="int" Nullable="false" />
+          <Property Name="fechaPrestamo" Type="datetime" Nullable="false" />
+          <Property Name="fechaEntrega" Type="datetime" />
+          <Property Name="devuelto" Type="bit" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="usuarioID" />
+          </Key>
+          <Property Name="usuarioID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="usuario" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="contraseña" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="rol" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Prestamos__clien__403A8C7D">
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="1" />
+          <End Role="Prestamos" Type="Self.Prestamos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="clienteID" />
+            </Principal>
+            <Dependent Role="Prestamos">
+              <PropertyRef Name="clienteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Prestamos__pelic__412EB0B6">
+          <End Role="Peliculas" Type="Self.Peliculas" Multiplicity="1" />
+          <End Role="Prestamos" Type="Self.Prestamos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Peliculas">
+              <PropertyRef Name="peliculaID" />
+            </Principal>
+            <Dependent Role="Prestamos">
+              <PropertyRef Name="peliculaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LA_HUESERAModelStoreContainer">
+          <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Peliculas" EntityType="Self.Peliculas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Prestamos" EntityType="Self.Prestamos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Prestamos__clien__403A8C7D" Association="Self.FK__Prestamos__clien__403A8C7D">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Prestamos" EntitySet="Prestamos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Prestamos__pelic__412EB0B6" Association="Self.FK__Prestamos__pelic__412EB0B6">
+            <End Role="Peliculas" EntitySet="Peliculas" />
+            <End Role="Prestamos" EntitySet="Prestamos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LA_HUESERAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Clientes">
+          <Key>
+            <PropertyRef Name="clienteID" />
+          </Key>
+          <Property Name="clienteID" Type="Int32" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="cedula" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="correo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="telefono" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Prestamos" Relationship="Self.FK__Prestamos__clien__403A8C7D" FromRole="Clientes" ToRole="Prestamos" />
+        </EntityType>
+        <EntityType Name="Peliculas">
+          <Key>
+            <PropertyRef Name="peliculaID" />
+          </Key>
+          <Property Name="peliculaID" Type="Int32" Nullable="false" />
+          <Property Name="codigo" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="titulo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="genero" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="director" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="disponible" Type="Boolean" />
+          <NavigationProperty Name="Prestamos" Relationship="Self.FK__Prestamos__pelic__412EB0B6" FromRole="Peliculas" ToRole="Prestamos" />
+        </EntityType>
+        <EntityType Name="Prestamos">
+          <Key>
+            <PropertyRef Name="prestamoID" />
+          </Key>
+          <Property Name="prestamoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="clienteID" Type="Int32" Nullable="false" />
+          <Property Name="peliculaID" Type="Int32" Nullable="false" />
+          <Property Name="fechaPrestamo" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="fechaEntrega" Type="DateTime" Precision="3" />
+          <Property Name="devuelto" Type="Boolean" />
+          <NavigationProperty Name="Clientes" Relationship="Self.FK__Prestamos__clien__403A8C7D" FromRole="Prestamos" ToRole="Clientes" />
+          <NavigationProperty Name="Peliculas" Relationship="Self.FK__Prestamos__pelic__412EB0B6" FromRole="Prestamos" ToRole="Peliculas" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="usuarioID" />
+          </Key>
+          <Property Name="usuarioID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="usuario" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="contraseña" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="rol" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Prestamos__clien__403A8C7D">
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="1" />
+          <End Role="Prestamos" Type="Self.Prestamos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="clienteID" />
+            </Principal>
+            <Dependent Role="Prestamos">
+              <PropertyRef Name="clienteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Prestamos__pelic__412EB0B6">
+          <End Role="Peliculas" Type="Self.Peliculas" Multiplicity="1" />
+          <End Role="Prestamos" Type="Self.Prestamos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Peliculas">
+              <PropertyRef Name="peliculaID" />
+            </Principal>
+            <Dependent Role="Prestamos">
+              <PropertyRef Name="peliculaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="LA_HUESERAEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clientes" EntityType="Self.Clientes" />
+          <EntitySet Name="Peliculas" EntityType="Self.Peliculas" />
+          <EntitySet Name="Prestamos" EntityType="Self.Prestamos" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" />
+          <AssociationSet Name="FK__Prestamos__clien__403A8C7D" Association="Self.FK__Prestamos__clien__403A8C7D">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Prestamos" EntitySet="Prestamos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Prestamos__pelic__412EB0B6" Association="Self.FK__Prestamos__pelic__412EB0B6">
+            <End Role="Peliculas" EntitySet="Peliculas" />
+            <End Role="Prestamos" EntitySet="Prestamos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LA_HUESERAModelStoreContainer" CdmEntityContainer="LA_HUESERAEntities">
+          <EntitySetMapping Name="Clientes">
+            <EntityTypeMapping TypeName="LA_HUESERAModel.Clientes">
+              <MappingFragment StoreEntitySet="Clientes">
+                <ScalarProperty Name="clienteID" ColumnName="clienteID" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="cedula" ColumnName="cedula" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Peliculas">
+            <EntityTypeMapping TypeName="LA_HUESERAModel.Peliculas">
+              <MappingFragment StoreEntitySet="Peliculas">
+                <ScalarProperty Name="peliculaID" ColumnName="peliculaID" />
+                <ScalarProperty Name="codigo" ColumnName="codigo" />
+                <ScalarProperty Name="titulo" ColumnName="titulo" />
+                <ScalarProperty Name="genero" ColumnName="genero" />
+                <ScalarProperty Name="director" ColumnName="director" />
+                <ScalarProperty Name="disponible" ColumnName="disponible" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Prestamos">
+            <EntityTypeMapping TypeName="LA_HUESERAModel.Prestamos">
+              <MappingFragment StoreEntitySet="Prestamos">
+                <ScalarProperty Name="prestamoID" ColumnName="prestamoID" />
+                <ScalarProperty Name="clienteID" ColumnName="clienteID" />
+                <ScalarProperty Name="peliculaID" ColumnName="peliculaID" />
+                <ScalarProperty Name="fechaPrestamo" ColumnName="fechaPrestamo" />
+                <ScalarProperty Name="fechaEntrega" ColumnName="fechaEntrega" />
+                <ScalarProperty Name="devuelto" ColumnName="devuelto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="LA_HUESERAModel.Usuarios">
+              <MappingFragment StoreEntitySet="Usuarios">
+                <ScalarProperty Name="usuarioID" ColumnName="usuarioID" />
+                <ScalarProperty Name="usuario" ColumnName="usuario" />
+                <ScalarProperty Name="contraseña" ColumnName="contraseña" />
+                <ScalarProperty Name="rol" ColumnName="rol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
