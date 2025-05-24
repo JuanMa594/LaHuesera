@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Conector;
+
 
 namespace LaHuesera.Controllers
 {
@@ -26,18 +29,45 @@ namespace LaHuesera.Controllers
         }
 
         // POST: api/Usuarios
-        public void Post([FromBody]string value)
+        public HttpResponseMessage Post([FromBody] Usuarios objUsuario)
         {
+            EntityState operacion = EntityState.Added;
+            return opercion(objUsuario, operacion);
         }
 
         // PUT: api/Usuarios/5
-        public void Put(int id, [FromBody]string value)
+        public HttpResponseMessage Put([FromBody] Usuarios objUsuario)
         {
+            EntityState operacion = EntityState.Modified;
+            return opercion(objUsuario, operacion);
         }
 
         // DELETE: api/Usuarios/5
-        public void Delete(int id)
+        public HttpResponseMessage Delete([FromBody] Usuarios objUsuario)
         {
+            EntityState operacion = EntityState.Deleted;
+            return opercion(objUsuario, operacion);
+        }
+
+
+        private HttpResponseMessage opercion([FromBody] Usuarios objUsuario, EntityState operacion)
+        {
+            int resp = 0;
+            HttpResponseMessage objMenRespuesta = null;
+            try
+            {
+                using (LA_HUESERAEntities objEntidad = new LA_HUESERAEntities())
+                {
+                    objEntidad.Entry(objUsuario).State = operacion;
+                    resp = objEntidad.SaveChanges();
+                    objMenRespuesta = Request.CreateResponse(HttpStatusCode.OK, resp);
+                }
+            }
+            catch (Exception er)
+            {
+                objMenRespuesta = Request.CreateErrorResponse(HttpStatusCode.InternalServerError, er.Message);
+            }
+            return objMenRespuesta;
         }
     }
 }
